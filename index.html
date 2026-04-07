@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DARKMODS PRO</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #05070d;
+    color: white;
+}
+
+/* HEADER */
+header {
+    text-align: center;
+    padding: 20px;
+    background: #0b0f1a;
+    box-shadow: 0 0 20px #00f0ff44;
+}
+
+.logo-text {
+    font-size: 26px;
+    background: linear-gradient(45deg,#00f0ff,#ff00c8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* SALDO */
+#saldoBox {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 15px;
+    background: linear-gradient(45deg,#00f0ff,#ff00c8);
+    font-weight: bold;
+}
+
+/* BOTONES */
+.btn {
+    width: 90%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(45deg,#00f0ff,#0088ff);
+    color: white;
+    font-weight: bold;
+    margin: 8px auto;
+    display: block;
+    box-shadow: 0 0 10px #00f0ff55;
+}
+
+/* CARDS */
+.card {
+    background: #0f1629;
+    margin: 15px;
+    padding: 15px;
+    border-radius: 18px;
+    box-shadow: 0 0 20px #00f0ff22;
+}
+
+.card img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+/* POPUP */
+.popup {
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:#000000cc;
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+
+.popup-box {
+    background:#0f1629;
+    padding:20px;
+    border-radius:15px;
+    width:90%;
+}
+
+/* ADMIN */
+#adminPanel {
+    padding: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginBox" style="text-align:center;padding:30px;">
+<h2>DARKMODS LOGIN</h2>
+<input id="email" placeholder="Correo">
+<input id="password" type="password" placeholder="Contraseña">
+<button class="btn" onclick="register()">Registrarse</button>
+<button class="btn" onclick="login()">Entrar</button>
+</div>
+
+<!-- TIENDA -->
+<div id="tienda" style="display:none;">
+
+<header>
+<div class="logo-text">DARK MODS STORE</div>
+<div id="saldoBox">💰 $<span id="saldo">0</span></div>
+
+<button class="btn" onclick="openRecarga()">Recargar saldo</button>
+<button id="adminBtn" class="btn" onclick="openAdmin()" style="display:none;">Admin</button>
+<button class="btn" onclick="logout()">Salir</button>
+</header>
+
+<!-- PRODUCTOS -->
+<div class="card">
+<img src="https://i.ibb.co/76FCbbn/file-0000000001d471fd8ced8ec472ce12dc.png">
+<h3>Pato Amarillo</h3>
+<select><option>30 días - $9</option></select>
+<button class="btn" onclick="comprar('Pato Amarillo', this.previousElementSibling)">Comprar</button>
+</div>
+
+<div class="card">
+<img src="https://i.ibb.co/xqGB4S1w/file-00000000dee871f89a7aa60828c28b9f.png">
+<h3>Pato Azul</h3>
+<select>
+<option>7 días - $5</option>
+<option>30 días - $9</option>
+</select>
+<button class="btn" onclick="comprar('Pato Azul', this.previousElementSibling)">Comprar</button>
+</div>
+
+<div class="card">
+<img src="https://i.ibb.co/N6N17FZ9/file-00000000754871fdac971d7dd6d83797.png">
+<h3>Pato Verde</h3>
+<select><option>30 días - $9</option></select>
+<button class="btn" onclick="comprar('Pato Verde', this.previousElementSibling)">Comprar</button>
+</div>
+
+<div class="card">
+<img src="https://i.ibb.co/S452bBGY/file-000000006dcc71fdae84c3923e4ab800.png">
+<h3>HG Cheat</h3>
+<select>
+<option>1 día - $1</option>
+<option>10 días - $6</option>
+<option>30 días - $10</option>
+</select>
+<button class="btn" onclick="comprar('HG Cheat', this.previousElementSibling)">Comprar</button>
+</div>
+
+<!-- TELEGRAM -->
+<div class="card">
+<a href="https://t.me/darknesskeys_bot" class="btn">Ir al bot de Telegram</a>
+</div>
+
+</div>
+
+<!-- RECARGA -->
+<div id="popup" class="popup">
+<div class="popup-box">
+<h3>Recargar saldo</h3>
+<p>ZELLE / PAYPAL</p>
+<p>alvarengalopezj50@gmail.com</p>
+
+<input id="montoRecarga">
+<input id="referencia">
+<input type="file" id="comprobante">
+
+<button class="btn" onclick="enviarRecarga()">Enviar</button>
+<button class="btn" onclick="cerrarRecarga()">Cerrar</button>
+</div>
+</div>
+
+<!-- ADMIN -->
+<div id="adminPanel" style="display:none;">
+<h2>ADMIN PANEL</h2>
+<div id="lista"></div>
+<button class="btn" onclick="volver()">Volver</button>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, increment, addDoc, collection, getDocs, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyDQX-pK3dzrQoAd9hH2PlCoAUVQfUYZfuc",
+  authDomain: "darkmods-6949a.firebaseapp.com",
+  projectId: "darkmods-6949a"
+});
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+const ADMIN_UID = "DbPBD2NjDHWsFZ3qDPRnHzM4EAA3";
+
+window.register = ()=>createUserWithEmailAndPassword(auth,email.value,password.value);
+window.login = ()=>signInWithEmailAndPassword(auth,email.value,password.value);
+window.logout = ()=>signOut(auth);
+
+onAuthStateChanged(auth,(user)=>{
+  adminBtn.style.display="none";
+
+  if(user){
+    loginBox.style.display="none";
+    tienda.style.display="block";
+
+    if(user.uid===ADMIN_UID){
+      adminBtn.style.display="block";
+    }
+
+    const refUser = doc(db,"users",user.uid);
+    onSnapshot(refUser,(snap)=>{
+      if(snap.exists()){
+        saldo.innerText = snap.data().saldo || 0;
+      }
+    });
+
+  } else {
+    loginBox.style.display="block";
+    tienda.style.display="none";
+  }
+});
+
+window.openRecarga = ()=> popup.style.display="flex";
+window.cerrarRecarga = ()=> popup.style.display="none";
+
+window.enviarRecarga = async ()=>{
+  const user = auth.currentUser;
+  const file = comprobante.files[0];
+
+  let url="";
+  if(file){
+    const storageRef = ref(storage,"comprobantes/"+Date.now());
+    await uploadBytes(storageRef,file);
+    url = await getDownloadURL(storageRef);
+  }
+
+  await addDoc(collection(db,"pagos"),{
+    email:user.email,
+    uid:user.uid,
+    monto:Number(montoRecarga.value),
+    referencia:referencia.value,
+    comprobante:url,
+    estado:"pendiente"
+  });
+
+  alert("Enviado 🔥");
+  cerrarRecarga();
+};
+
+window.comprar = async (nombre, select)=>{
+  const user = auth.currentUser;
+  const precio = Number(select.value.match(/\$(\d+)/)[1]);
+
+  const refUser = doc(db,"users",user.uid);
+  const snap = await getDoc(refUser);
+
+  let saldoActual = snap.exists() ? snap.data().saldo || 0 : 0;
+
+  if(saldoActual < precio){
+    return alert("Saldo insuficiente ❌");
+  }
+
+  await setDoc(refUser,{saldo:increment(-precio)},{merge:true});
+
+  await addDoc(collection(db,"pagos"),{
+    email:user.email,
+    producto:nombre,
+    monto:precio,
+    tipo:"compra",
+    estado:"aprobado"
+  });
+
+  alert("Compra realizada 🔥");
+};
+
+window.openAdmin = async ()=>{
+  const snap = await getDocs(collection(db,"pagos"));
+  lista.innerHTML="";
+
+  snap.forEach(d=>{
+    const p = d.data();
+
+    lista.innerHTML+=`
+    <div class="card">
+    ${p.email}<br>
+    ${p.producto || "RECARGA"}<br>
+    $${p.monto}<br>
+    ${p.estado}<br>
+
+    <button onclick="aprobar('${d.id}')">Aprobar</button>
+    <button onclick="rechazar('${d.id}')">Rechazar</button>
+    </div>
+    `;
+  });
+
+  tienda.style.display="none";
+  adminPanel.style.display="block";
+};
+
+window.aprobar = async(id)=>{
+  const pagos = await getDocs(collection(db,"pagos"));
+  let data;
+
+  pagos.forEach(d=>{
+    if(d.id===id) data = d.data();
+  });
+
+  await updateDoc(doc(db,"pagos",id),{estado:"aprobado"});
+
+  if(!data.tipo){
+    await setDoc(doc(db,"users",data.uid),{
+      saldo: increment(data.monto)
+    },{merge:true});
+  }
+
+  openAdmin();
+};
+
+window.rechazar = async(id)=>{
+  await updateDoc(doc(db,"pagos",id),{estado:"rechazado"});
+  openAdmin();
+};
+
+window.volver = ()=>{
+  adminPanel.style.display="none";
+  tienda.style.display="block";
+};
+
+</script>
+
+</body>
+</html>
