@@ -457,7 +457,14 @@ input, select {
 <!-- ADMIN -->
 <div id="adminPanel" style="display:none;">
 <h2>ADMIN PANEL</h2>
-<div id="lista"></div>
+<h3>🟡 Pendientes</h3>
+<div id="pendientes"></div>
+
+<h3>🟢 Aprobadas</h3>
+<div id="aprobadas"></div>
+
+<h3>🔴 Rechazadas</h3>
+<div id="rechazadas"></div>
 <button class="btn" onclick="volver()">Volver</button>
 </div>
 
@@ -563,21 +570,35 @@ window.comprar = async (nombre, select)=>{
 
 window.openAdmin = async ()=>{
   const snap = await getDocs(collection(db,"pagos"));
-  lista.innerHTML="";
+
+  pendientes.innerHTML="";
+  aprobadas.innerHTML="";
+  rechazadas.innerHTML="";
 
   snap.forEach(d=>{
     const p = d.data();
 
-    lista.innerHTML+=`
+    const card = `
     <div class="card">
-    ${p.email}<br>
-    ${p.producto || "RECARGA"}<br>
-    $${p.monto}<br>
-    ${p.estado}<br>
+      ${p.email}<br>
+      ${p.producto || "RECARGA"}<br>
+      $${p.monto}<br>
+      ${p.estado}<br>
 
-  <button class="admin-btn btn-aprobar" onclick="aprobar('${d.id}')">✔ Aprobar</button>
-<button class="admin-btn btn-rechazar" onclick="rechazar('${d.id}')">✖ Rechazar</button>
+      <button class="admin-btn btn-aprobar" onclick="aprobar('${d.id}')">✔ Aprobar</button>
+      <button class="admin-btn btn-rechazar" onclick="rechazar('${d.id}')">✖ Rechazar</button>
+    </div>
     `;
+
+    if(p.estado === "pendiente"){
+      pendientes.innerHTML += card;
+    } 
+    else if(p.estado === "aprobado"){
+      aprobadas.innerHTML += card;
+    } 
+    else {
+      rechazadas.innerHTML += card;
+    }
   });
 
   tienda.style.display="none";
