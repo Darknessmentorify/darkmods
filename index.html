@@ -621,6 +621,20 @@ window.filtrar = () => {
     card.style.display = nombre.includes(texto) ? "block" : "none";
   });
 };
+// 🔥 ACTIVIDAD FALSA SEGURA
+setInterval(async () => {
+  try {
+    const fakeRef = doc(db, "actividad", "ping");
+
+    await setDoc(fakeRef, {
+      time: Date.now()
+    });
+
+    console.log("🔥 ping activo");
+  } catch(e){
+    console.log("error ping", e);
+  }
+}, 300000); // cada 5 min
 </script>
 
 </body>
