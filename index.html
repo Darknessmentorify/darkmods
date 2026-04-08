@@ -79,8 +79,6 @@ header {
     overflow: hidden;
 }
 
-
-
 .card:hover {
     transform: translateY(-6px) scale(1.02);
     box-shadow: 0 0 35px #00f0ff88;
@@ -211,6 +209,99 @@ input, select {
     color: white;
     box-shadow: 0 0 15px #ff0055;
 }
+    /* 🔥 GRID PRO (PC) */
+@media (min-width: 900px) {
+    #tienda {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+        padding: 25px;
+        align-items: start;
+    }
+
+    /* el header ocupa toda la fila */
+    #tienda header {
+        grid-column: 1 / -1;
+    }
+
+    .card {
+        margin: 0;
+    }
+}
+
+/* 📱 MOBILE (ajuste bonito) */
+@media (max-width: 600px) {
+    .card {
+        margin: 15px;
+    }
+}
+    /* 🔥 LAYOUT PRO */
+.layout {
+    display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 220px;
+    background: rgba(0,0,0,0.4);
+    padding: 20px;
+    border-right: 1px solid #00f0ff33;
+}
+
+/* BOTONES SIDEBAR */
+.side-btn {
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    background: rgba(0,255,255,0.08);
+    border: 1px solid #00f0ff33;
+    color: #00f0ff;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.side-btn:hover {
+    background: #00f0ff;
+    color: black;
+}
+
+/* CONTENIDO */
+.contenido {
+    flex: 1;
+}
+
+/* 🔥 GRID PRODUCTOS */
+@media (min-width: 900px) {
+    .contenido {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .contenido header {
+        grid-column: 1 / -1;
+    }
+}
+
+/* 📱 MOBILE */
+@media (max-width: 800px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+    }
+
+    .side-btn {
+        flex: 1;
+        margin: 5px;
+    }
+}
 </style>
 </head>
 
@@ -227,17 +318,36 @@ input, select {
 
 <!-- TIENDA -->
 <div id="tienda" style="display:none;">
+<div class="layout">
+    
+    <div class="sidebar">
+    <h3>Menú</h3>
 
+    <button class="side-btn">🏠 Inicio</button>
+    <button class="side-btn">🛒 Productos</button>
+    <button class="side-btn">🔥 Premium</button>
+    <button class="side-btn">📱 Redes</button>
+    <button class="side-btn">🤖 Bot Telegram</button>
+</div>
+
+<div class="contenido">
+    
 <header>
 <div class="logo-text">DARK MODS STORE</div>
 
 <div class="top-bar">
+    <div style="margin-top:15px;">
+    <input id="buscador" placeholder="🔍 Buscar producto..." oninput="filtrar()" 
+    style="width:95%;padding:12px;border-radius:10px;border:none;">
+</div>
     <div id="saldoBox">💰 $<span id="saldo">0</span></div>
 
     <div>
         <button class="mini-btn" onclick="openRecarga()">💳</button>
         <button id="adminBtn" class="mini-btn" onclick="openAdmin()" style="display:none;">⚙</button>
         <button class="mini-btn logout" onclick="logout()">⎋</button>
+        </div> <!-- contenido -->
+        </div> <!-- cierre layout -->
     </div>
 </div>
 
@@ -490,7 +600,15 @@ window.volver = ()=>{
   adminPanel.style.display="none";
   tienda.style.display="block";
 };
+window.filtrar = () => {
+  const texto = buscador.value.toLowerCase();
+  const cards = document.querySelectorAll(".card");
 
+  cards.forEach(card => {
+    const nombre = card.innerText.toLowerCase();
+    card.style.display = nombre.includes(texto) ? "block" : "none";
+  });
+};
 </script>
 
 </body>
