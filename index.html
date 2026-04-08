@@ -585,7 +585,7 @@ window.openAdmin = async ()=>{
       $${p.monto}<br>
       ${p.estado}<br>
 
-      <button class="admin-btn btn-aprobar" onclick="aprobar('${d.id}')">✔ Aprobar</button>
+      <button class="admin-btn btn-aprobar" onclick="this.disabled=true; aprobar('${d.id}')">✔ Aprobar</button>
       <button class="admin-btn btn-rechazar" onclick="rechazar('${d.id}')">✖ Rechazar</button>
     </div>
     `;
