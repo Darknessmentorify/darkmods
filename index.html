@@ -9,60 +9,99 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: #05070d;
-    color: white;
+    background: radial-gradient(circle at top, #060b1a, #000000);
+    color: #e6f1ff;
 }
 
 /* HEADER */
 header {
     text-align: center;
     padding: 20px;
-    background: #0b0f1a;
-    box-shadow: 0 0 20px #00f0ff44;
+    background: rgba(5,10,25,0.7);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #00f0ff33;
+    box-shadow: 0 0 30px #00f0ff33;
 }
 
 .logo-text {
-    font-size: 26px;
-    background: linear-gradient(45deg,#00f0ff,#ff00c8);
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg,#00f0ff,#ff00c8,#00ff88);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px #00f0ff88;
 }
 
 /* SALDO */
 #saldoBox {
-    margin-top: 10px;
-    padding: 10px;
-    border-radius: 15px;
-    background: linear-gradient(45deg,#00f0ff,#ff00c8);
-    font-weight: bold;
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 20px;
+    background: linear-gradient(90deg,#00f0ff,#0088ff);
+    box-shadow: 0 0 20px #00f0ff88;
+    animation: glow 2s infinite alternate;
 }
 
 /* BOTONES */
 .btn {
     width: 90%;
-    padding: 12px;
-    border-radius: 12px;
+    padding: 14px;
+    border-radius: 15px;
     border: none;
-    background: linear-gradient(45deg,#00f0ff,#0088ff);
+    background: linear-gradient(90deg,#00f0ff,#0088ff);
     color: white;
     font-weight: bold;
-    margin: 8px auto;
+    margin: 10px auto;
     display: block;
-    box-shadow: 0 0 10px #00f0ff55;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 0 15px #00f0ff66;
+}
+
+.btn:hover {
+    transform: scale(1.07);
+    box-shadow: 0 0 30px #00f0ff;
+    background: linear-gradient(90deg,#00ffcc,#0099ff);
 }
 
 /* CARDS */
 .card {
-    background: #0f1629;
-    margin: 15px;
+    background: rgba(10,15,35,0.85);
+    margin: 20px;
     padding: 15px;
-    border-radius: 18px;
-    box-shadow: 0 0 20px #00f0ff22;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    border: 1px solid #00f0ff22;
+    box-shadow: 0 0 25px #00f0ff22;
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+
+
+.card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 0 35px #00f0ff88;
 }
 
 .card img {
     width: 100%;
-    border-radius: 12px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+
+/* INPUTS */
+input, select {
+    width: 90%;
+    padding: 10px;
+    margin: 8px auto;
+    display: block;
+    border-radius: 10px;
+    border: 1px solid #00f0ff33;
+    background: #050a1a;
+    color: white;
 }
 
 /* POPUP */
@@ -70,22 +109,65 @@ header {
     position: fixed;
     top:0; left:0;
     width:100%; height:100%;
-    background:#000000cc;
+    background:#000000ee;
     display:none;
     justify-content:center;
     align-items:center;
 }
 
 .popup-box {
-    background:#0f1629;
-    padding:20px;
-    border-radius:15px;
+    background: rgba(10,15,35,0.95);
+    padding:25px;
+    border-radius:20px;
     width:90%;
+    box-shadow: 0 0 40px #00f0ff55;
 }
 
-/* ADMIN */
-#adminPanel {
-    padding: 15px;
+/* LOGIN */
+#loginBox {
+    background: rgba(10,15,35,0.9);
+    margin: 40px;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 0 35px #00f0ff33;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 10px #00f0ff66; }
+    to { box-shadow: 0 0 25px #00f0ff; }
+}
+    /* BOTONES ADMIN */
+.admin-btn {
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    margin: 5px 5px 0 0;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    color: white;
+}
+
+/* Aprobar */
+.btn-aprobar {
+    background: linear-gradient(90deg,#00ff88,#00cc66);
+    box-shadow: 0 0 10px #00ff88;
+}
+
+.btn-aprobar:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #00ff88;
+}
+
+/* Rechazar */
+.btn-rechazar {
+    background: linear-gradient(90deg,#ff0055,#ff0033);
+    box-shadow: 0 0 10px #ff0055;
+}
+
+.btn-rechazar:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #ff0055;
 }
 </style>
 </head>
@@ -149,7 +231,7 @@ header {
 <button class="btn" onclick="comprar('HG Cheat', this.previousElementSibling)">Comprar</button>
 </div>
 
-    <div class="card">
+<div class="card">
 <img src="https://i.ibb.co/6RSxCpp1/file-00000000a67471fdae61df21df5fe808.png">
 <h3>Metodo de Seguidores likes y vistas</h3>
 <select>
@@ -167,18 +249,22 @@ header {
 <button class="btn" onclick="comprar('Toma foto desde su celular', this.previousElementSibling)">Comprar</button>
 </div>
 
-    <div class="card">
+<div class="card">
 <img src="https://i.ibb.co/spzBMnwC/file-00000000cc1871fdba128271d39f0544.png">
 <h3>Números virtuales para todos los países</h3>
 <select>
 <option>Acceso completo - $12</option>
 </select>
 <button class="btn" onclick="comprar('Números virtuales para todos los países', this.previousElementSibling)">Comprar</button>
-    </div>
-<!-- TELEGRAM -->
+</div>
+
 <div class="card">
 <a href="https://t.me/darknesskeys_bot" class="btn">Ir al bot de Telegram</a>
 </div>
+
+</div>
+
+<!-- TODO TU SCRIPT ORIGINAL SIGUE IGUAL -->
 
 </div>
 
@@ -319,9 +405,8 @@ window.openAdmin = async ()=>{
     $${p.monto}<br>
     ${p.estado}<br>
 
-    <button onclick="aprobar('${d.id}')">Aprobar</button>
-    <button onclick="rechazar('${d.id}')">Rechazar</button>
-    </div>
+  <button class="admin-btn btn-aprobar" onclick="aprobar('${d.id}')">✔ Aprobar</button>
+<button class="admin-btn btn-rechazar" onclick="rechazar('${d.id}')">✖ Rechazar</button>
     `;
   });
 
