@@ -606,32 +606,43 @@ window.openAdmin = async ()=>{
 };
 
 window.aprobar = async (id) => {
-    alert("click funcionando");
   const user = auth.currentUser;
 
   if (!user || user.uid !== "DbPBD2NjDHWsFZ3qDPRnHzM4EAA3") {
     return alert("No eres admin ❌");
   }
 
-  const refPago = doc(db, "pagos", id);
-  const snap = await getDoc(refPago);
+  try {
+    const refPago = doc(db, "pagos", id);
+    const snap = await getDoc(refPago);
 
-  if (!snap.exists()) return;
+    if (!snap.exists()) return;
 
-  const data = snap.data();
+    const data = snap.data();
 
-  await updateDoc(refPago, {
-    estado: "aprobado"
-  });
+    // 🔥 IMPORTANTE: esperar bien
+    await updateDoc(refPago, {
+      estado: "aprobado"
+    });
 
-  if (!data.tipo) {
-    await setDoc(doc(db, "users", data.uid), {
-      saldo: increment(data.monto)
-    }, { merge: true });
+    // 🔥 SOLO recargas
+    if (!data.tipo && data.uid) {
+      await setDoc(doc(db, "users", data.uid), {
+        saldo: increment(data.monto)
+      }, { merge: true });
+    }
+
+    alert("Aprobado ✅");
+
+    // ⏳ pequeño delay para que Firebase sincronice
+    setTimeout(() => {
+      openAdmin();
+    }, 500);
+
+  } catch (e) {
+    console.error(e);
+    alert("Error ❌");
   }
-
-  alert("Aprobado ✅");
-  openAdmin();
 };
 
 window.rechazar = async(id)=>{
