@@ -335,6 +335,7 @@ input, select {
 <input id="password" type="password" placeholder="Contraseña">
 <button class="btn" onclick="register()">Registrarse</button>
 <button class="btn" onclick="login()">Entrar</button>
+    
 </div>
 
 <!-- TIENDA -->
@@ -346,6 +347,8 @@ input, select {
     
 <header>
 <div class="logo-text">DARK MODS STORE</div>
+    
+    <div id="nombreUsuario" style="margin-top:10px;font-size:14px;color:#00f0ff;"></div>
 
 <div class="top-bar">
     <div style="margin-top:15px;">
@@ -353,9 +356,12 @@ input, select {
     style="width:95%;padding:12px;border-radius:10px;border:none;">
 </div>
     <div id="saldoBox">💰 $<span id="saldo">0</span></div>
-
+<div id="bonusBox" style="margin-top:10px;padding:10px;border-radius:15px;background:linear-gradient(90deg,#ff00c8,#00f0ff);box-shadow:0 0 15px #ff00c888;">
+🎁 Bonus: $<span id="bonus">0</span>
+</div>
     <div>
         <button class="mini-btn" onclick="openRecarga()">💳</button>
+        <button class="mini-btn" onclick="toggleRanking()">🏆</button>
         <button id="adminBtn" class="mini-btn" onclick="openAdmin()" style="display:none;">⚙</button>
         <button class="mini-btn logout" onclick="logout()">⎋</button>
         </div> <!-- contenido -->
@@ -467,7 +473,17 @@ input, select {
 <div id="rechazadas"></div>
 <button class="btn" onclick="volver()">Volver</button>
 </div>
+<div id="rankingPanel" style="display:none;padding:20px;">
+<h2>🏆 Ranking</h2>
 
+<button class="btn" onclick="cargarRanking('dia')">📅 Diario</button>
+<button class="btn" onclick="cargarRanking('semana')">🗓 Semana</button>
+<button class="btn" onclick="cargarRanking('mes')">📆 Mes</button>
+
+<div id="rankingLista"></div>
+
+<button class="btn" onclick="cerrarRanking()">Volver</button>
+</div>
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -506,6 +522,8 @@ onAuthStateChanged(auth,(user)=>{
     onSnapshot(refUser,(snap)=>{
       if(snap.exists()){
         saldo.innerText = snap.data().saldo || 0;
+          bonus.innerText = snap.data().bonus || 0;
+          nombreUsuario.innerText = "👤 " + (snap.data().username || "Sin nombre");
       }
     });
 
@@ -530,13 +548,14 @@ window.enviarRecarga = async ()=>{
   }
 
   await addDoc(collection(db,"pagos"),{
-    email:user.email,
-    uid:user.uid,
-    monto:Number(montoRecarga.value),
-    referencia:referencia.value,
-    comprobante:url,
-    estado:"pendiente"
-  });
+  email:user.email,
+  uid:user.uid,
+  monto:Number(montoRecarga.value),
+  referencia:referencia.value,
+  comprobante:url,
+  estado:"pendiente",
+  fecha: Date.now() // 🔥
+});
 
   alert("Enviado 🔥");
   cerrarRecarga();
@@ -558,12 +577,13 @@ window.comprar = async (nombre, select)=>{
   await setDoc(refUser,{saldo:increment(-precio)},{merge:true});
 
   await addDoc(collection(db,"pagos"),{
-    email:user.email,
-    producto:nombre,
-    monto:precio,
-    tipo:"compra",
-    estado:"aprobado"
-  });
+  email:user.email,
+  producto:nombre,
+  monto:precio,
+  tipo:"compra",
+  estado:"aprobado",
+  fecha: Date.now() // 🔥
+});
 
   alert("Compra realizada 🔥");
 };
@@ -677,6 +697,134 @@ setInterval(async () => {
     console.log("error ping", e);
   }
 }, 300000); // cada 5 min
+
+window.toggleRanking = ()=>{
+  tienda.style.display="none";
+  rankingPanel.style.display="block";
+
+  cargarRanking("dia"); // 🔥 ESTO FALTABA
+};
+
+window.cerrarRanking = ()=>{
+  rankingPanel.style.display="none";
+  tienda.style.display="block";
+};
+
+window.cargarRanking = async(tipo)=>{
+    window.tipoActualRanking = tipo;
+  const snap = await getDocs(collection(db,"pagos"));
+
+  const now = Date.now();
+
+  let filtro = 0;
+
+  const fecha = new Date();
+
+// 🔥 DIA (desde medianoche Honduras)
+const inicioDia = new Date(
+  fecha.toLocaleString("en-US", { timeZone: "America/Tegucigalpa" })
+);
+inicioDia.setHours(0,0,0,0);
+
+// 🔥 SEMANA (desde domingo 00:00)
+const inicioSemana = new Date(inicioDia);
+inicioSemana.setDate(inicioSemana.getDate() - inicioSemana.getDay());
+
+// 🔥 MES (desde día 1 a las 00:00)
+const inicioMes = new Date(inicioDia.getFullYear(), inicioDia.getMonth(), 1);
+
+if(tipo==="dia"){
+  filtro = inicioDia.getTime();
+}
+if(tipo==="semana"){
+  filtro = inicioSemana.getTime();
+}
+if(tipo==="mes"){
+  filtro = inicioMes.getTime();
+}
+
+  let totales = {};
+
+  snap.forEach(d=>{
+    const p = d.data();
+
+    if(!p.uid || p.estado !== "aprobado") return;
+    
+      const tiempo = p.fecha || 0;
+    
+      if(tiempo >= filtro){
+      totales[p.uid] = (totales[p.uid] || 0) + p.monto;
+    }
+  });
+
+  const top = Object.entries(totales)
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,3);
+
+  rankingLista.innerHTML = "";
+
+for (let i = 0; i < top.length; i++) {
+  const uid = top[i][0];
+  const monto = top[i][1];
+
+  const userDoc = await getDoc(doc(db,"users", uid));
+  const nombre = userDoc.exists() ? (userDoc.data().username || uid) : uid;
+
+  rankingLista.innerHTML += `
+    <div class="card">
+      #${i+1} 👤 ${nombre}<br>
+      💰 $${monto}
+    </div>
+  `;
+}
+};
+
+setInterval(()=>{
+  if(rankingPanel.style.display === "block"){
+    // recargar el último tipo usado
+    if(window.tipoActualRanking){
+      cargarRanking(window.tipoActualRanking);
+    }
+  }
+}, 30000);
+
+window.guardarNombre = async () => {
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert("Espera 2 segundos después de iniciar sesión ❌");
+    return;
+  }
+
+  if (!username.value.trim()) {
+    return alert("Escribe un nombre");
+  }
+
+  const nombre = username.value.trim().toLowerCase();
+
+  const snap = await getDocs(collection(db,"users"));
+
+  let existe = false;
+
+  snap.forEach(d=>{
+    if(d.data().username?.toLowerCase() === nombre){
+      existe = true;
+    }
+  });
+
+  if(existe){
+    return alert("Ese nombre ya está en uso ❌");
+  }
+
+  await setDoc(doc(db, "users", user.uid), {
+    username: username.value.trim()
+  }, { merge: true });
+
+  // 🔥 esto hace que aparezca al instante
+  nombreUsuario.innerText = "👤 " + username.value;
+
+  alert("Nombre guardado 🔥");
+};
 </script>
 
 </body>
