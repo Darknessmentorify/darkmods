@@ -173,11 +173,20 @@ input, select {
     /* HEADER PRO */
 .top-bar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-top: 15px;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.top-bar input {
+    flex: 1;
+    min-width: 200px;
 }
 
+.top-bar > div:last-child {
+    display: flex;
+    gap: 8px;
+}
 /* BOTONES MINI */
 .mini-btn {
     background: rgba(0,255,255,0.1);
@@ -197,7 +206,11 @@ input, select {
     box-shadow: 0 0 15px #00f0ff;
     transform: scale(1.1);
 }
-
+#buscador {
+    background: rgba(0,255,255,0.08);
+    border: 1px solid #00f0ff55;
+    color: white;
+}
 /* BOTÓN SALIR */
 .logout {
     border-color: #ff0055;
