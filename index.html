@@ -605,22 +605,31 @@ window.openAdmin = async ()=>{
   adminPanel.style.display="block";
 };
 
-window.aprobar = async(id)=>{
-  const pagos = await getDocs(collection(db,"pagos"));
-  let data;
+window.aprobar = async (id) => {
+  const user = auth.currentUser;
 
-  pagos.forEach(d=>{
-    if(d.id===id) data = d.data();
-  });
-
-  await updateDoc(doc(db,"pagos",id),{estado:"aprobado"});
-
-  if(!data.tipo){
-    await setDoc(doc(db,"users",data.uid),{
-      saldo: increment(data.monto)
-    },{merge:true});
+  if (!user || user.uid !== "DbPBD2NjDHWsFZ3qDPRnHzM4EAA3") {
+    return alert("No eres admin ❌");
   }
 
+  const refPago = doc(db, "pagos", id);
+  const snap = await getDoc(refPago);
+
+  if (!snap.exists()) return;
+
+  const data = snap.data();
+
+  await updateDoc(refPago, {
+    estado: "aprobado"
+  });
+
+  if (!data.tipo) {
+    await setDoc(doc(db, "users", data.uid), {
+      saldo: increment(data.monto)
+    }, { merge: true });
+  }
+
+  alert("Aprobado ✅");
   openAdmin();
 };
 
