@@ -459,6 +459,10 @@ input, select {
   <div class="popup-box">
     <h3>📚 Tutoriales</h3>
 
+      <button class="btn" onclick="abrirDrip()">
+📱 Instalación Drip Client Android
+</button>
+      
     <button class="btn" onclick="abrirPato()">
 🐤 Instalación Pato Team Android
 </button>
@@ -508,6 +512,34 @@ input, select {
 
 <button class="btn" onclick="cerrarRanking()">Volver</button>
 </div>
+
+<!-- DRIP CLIENT -->
+<div id="dripPage" style="display:none;padding:20px;">
+<h2>📱 DRIP CLIENT ANDROID</h2>
+
+<p><b>Tutorial completo:</b></p>
+<a href="https://vt.tiktok.com/ZSH9fAcUH/" target="_blank">🎥 Ver video</a>
+
+<h3>📦 Archivos necesarios</h3>
+
+<p>📁 APK:</p>
+<a href="https://www.mediafire.com/file/ihqva0511vuln63/DRIPCLIENT_V1.0_xYz.apks/file" target="_blank">
+Descargar APK
+</a>
+
+<p>🌐 VPN India:</p>
+<a href="https://play.google.com/store/apps/details?id=free.vpnindia.unlimited.fast.secure.proxy.turbo" target="_blank">
+Descargar VPN
+</a>
+
+<p>📂 ZArchiver:</p>
+<a href="https://play.google.com/store/apps/details?id=ru.zdevs.zarchiver" target="_blank">
+Descargar ZArchiver
+</a>
+
+<button class="btn" onclick="volverTienda()">⬅ Volver</button>
+</div>
+
 <!-- PATO TEAM -->
 <div id="patoPage" style="display:none;padding:20px;">
 <h2>🐤 PATO TEAM</h2>
@@ -897,6 +929,13 @@ window.guardarNombre = async () => {
 window.toggleMenu = () => {
   menuPanel.style.display = "flex";
 };
+
+window.abrirDrip = () => {
+  menuPanel.style.display = "none";
+  tienda.style.display = "none";
+  dripPage.style.display = "block";
+};
+
 window.abrirPato = () => {
   menuPanel.style.display = "none";
   tienda.style.display = "none";
