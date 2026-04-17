@@ -323,19 +323,47 @@ input, select {
         margin: 5px;
     }
 }
+    .admin-header {
+    position: sticky;
+    top: 0;
+    background: rgba(5,10,25,0.95);
+    backdrop-filter: blur(10px);
+    padding: 10px;
+    z-index: 999;
+    border-bottom: 1px solid #00f0ff33;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.volver-btn {
+    width: auto;
+    padding: 10px 15px;
+    font-size: 14px;
+}
 </style>
 </head>
 
 <body>
 
 <!-- LOGIN -->
-<div id="loginBox" style="text-align:center;padding:30px;">
-<h2>DARKMODS LOGIN</h2>
-<input id="email" placeholder="Correo">
-<input id="password" type="password" placeholder="Contraseña">
-<button class="btn" onclick="register()">Registrarse</button>
-<button class="btn" onclick="login()">Entrar</button>
-    
+<div id="loginBox" class="login-neo">
+
+<div class="floating-controls">
+  <div class="control red"></div>
+  <div class="control blue"></div>
+  <div class="control green"></div>
+  <div class="control yellow"></div>
+</div>
+
+<h2 class="login-title">🎮 DARKMODS LOGIN</h2>
+
+<input id="email" placeholder="📧 Correo">
+<input id="password" type="password" placeholder="🔒 Contraseña">
+
+<button class="btn login-btn" onclick="register()">Registrarse</button>
+<button class="btn login-btn" onclick="login()">Entrar</button>
+
 </div>
 
 <!-- TIENDA -->
@@ -490,7 +518,11 @@ input, select {
 
 <!-- ADMIN -->
 <div id="adminPanel" style="display:none;">
-<h2>ADMIN PANEL</h2>
+
+<div class="admin-header">
+    <button class="btn volver-btn" onclick="volver()">⬅ Volver</button>
+    <h2>⚙ ADMIN PANEL</h2>
+</div>
 <h3>🟡 Pendientes</h3>
 <div id="pendientes"></div>
 
