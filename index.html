@@ -9,7 +9,7 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: radial-gradient(circle at top, #060b1a, #000000);
+    background: radial-gradient(circle at top, #020617, #000000 70%);
     color: #e6f1ff;
 }
 
@@ -17,20 +17,19 @@ body {
 header {
     text-align: center;
     padding: 20px;
-    background: rgba(5,10,25,0.7);
+    margin: 10px;
+    border-radius: 20px;
+    background: rgba(0, 20, 30, 0.6);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid #00f0ff33;
-    box-shadow: 0 0 30px #00f0ff33;
+    border: 1px solid #00ffcc33;
+    box-shadow: 0 0 25px #00ffcc33;
 }
 
 .logo-text {
-    font-size: 30px;
+    font-size: 28px;
     font-weight: bold;
-    letter-spacing: 2px;
-    background: linear-gradient(90deg,#00f0ff,#ff00c8,#00ff88);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 20px #00f0ff88;
+    color: #00ffcc;
+    text-shadow: 0 0 15px #00ffcc;
 }
 
 /* SALDO */
@@ -49,14 +48,19 @@ header {
     padding: 14px;
     border-radius: 15px;
     border: none;
-    background: linear-gradient(90deg,#00f0ff,#0088ff);
-    color: white;
+    background: linear-gradient(90deg,#00ffcc,#00c3ff);
+    color: black;
     font-weight: bold;
     margin: 10px auto;
     display: block;
     cursor: pointer;
     transition: 0.3s;
-    box-shadow: 0 0 15px #00f0ff66;
+    box-shadow: 0 0 15px #00ffcc66;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #00ffcc;
 }
 
 .btn:hover {
@@ -67,16 +71,19 @@ header {
 
 /* CARDS */
 .card {
-    background: rgba(10,15,35,0.85);
-    margin: 20px;
+    background: rgba(5, 15, 25, 0.85);
+    margin: 15px;
     padding: 15px;
     border-radius: 20px;
-    backdrop-filter: blur(15px);
-    border: 1px solid #00f0ff22;
-    box-shadow: 0 0 25px #00f0ff22;
+    backdrop-filter: blur(10px);
+    border: 1px solid #00ffcc22;
+    box-shadow: 0 0 20px #00ffcc22;
     transition: 0.3s;
-    position: relative;
-    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 30px #00ffcc66;
 }
 
 .card:hover {
@@ -96,12 +103,12 @@ header {
 /* INPUTS */
 input, select {
     width: 90%;
-    padding: 10px;
+    padding: 12px;
     margin: 8px auto;
     display: block;
-    border-radius: 10px;
-    border: 1px solid #00f0ff33;
-    background: #050a1a;
+    border-radius: 12px;
+    border: 1px solid #00ffcc33;
+    background: #020617;
     color: white;
 }
 
@@ -190,8 +197,8 @@ input, select {
 /* BOTONES MINI */
 .mini-btn {
     background: rgba(0,255,255,0.1);
-    border: 1px solid #00f0ff55;
-    color: #00f0ff;
+    border: 1px solid #00ffcc55;
+    color: #00ffcc;
     font-size: 18px;
     padding: 10px 12px;
     border-radius: 12px;
@@ -201,16 +208,39 @@ input, select {
 }
 
 .mini-btn:hover {
+    background: #00ffcc;
+    color: black;
+    box-shadow: 0 0 15px #00ffcc;
+}
+
+.mini-btn:hover {
     background: #00f0ff;
     color: black;
     box-shadow: 0 0 15px #00f0ff;
     transform: scale(1.1);
 }
 #buscador {
-    background: rgba(0,255,255,0.08);
-    border: 1px solid #00f0ff55;
-    color: white;
+    width: 95%;
+    padding: 14px;
+    border-radius: 20px;
+    border: 1px solid #00ffcc55;
+    background: rgba(0,255,255,0.05);
+    color: #ffffff;
+    outline: none;
+    font-size: 15px;
+    box-shadow: 0 0 15px #00ffcc22;
+    transition: 0.3s;
 }
+
+/* 🔥 EFECTO AL TOCAR */
+#buscador:focus {
+    border: 1px solid #00ffcc;
+    box-shadow: 0 0 25px #00ffcc;
+    background: rgba(0,255,255,0.08);
+    #buscador::placeholder {
+    color: #88ffff88;
+}
+
 /* BOTÓN SALIR */
 .logout {
     border-color: #ff0055;
@@ -323,6 +353,62 @@ input, select {
         margin: 5px;
     }
 }
+    .card img {
+    border-radius: 15px;
+    box-shadow: 0 0 15px #00ffcc33;
+}
+    /* 🔥 PANEL SUPERIOR */
+.top-bar {
+    background: rgba(0, 20, 30, 0.7);
+    padding: 20px;
+    border-radius: 25px;
+    border: 1px solid #00ffcc33;
+
+    /* 🔥 DOBLE GLOW (clave) */
+    box-shadow:
+        0 0 25px #00ffcc33,
+        0 0 60px #00ffcc22,
+        inset 0 0 20px #00ffcc11;
+    
+    margin: 15px;
+}
+    header {
+    box-shadow:
+        0 0 30px #00ffcc33,
+        inset 0 0 15px #00ffcc22;
+}
+
+/* 🔥 SALDO */
+#saldoBox {
+    background: linear-gradient(90deg,#00ffcc,#00c3ff);
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-weight: bold;
+    color: black;
+    box-shadow: 0 0 20px #00ffcc;
+}
+
+/* 🔥 BONUS */
+#bonusBox {
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-weight: bold;
+    box-shadow: 0 0 20px #ff00c8;
+}
+    /* 🔥 FIX CLICK POPUP */
+.popup {
+    z-index: 9999;
+}
+
+.popup-box {
+    z-index: 10000;
+    position: relative;
+}
+
+.btn {
+    position: relative;
+    z-index: 10001;
+}
 </style>
 </head>
 
@@ -350,7 +436,9 @@ input, select {
     
     <div id="nombreUsuario" style="margin-top:10px;font-size:14px;color:#00f0ff;"></div>
 
-<div class="top-bar">
+<div class="panel-pro">
+    <div class="top-bar">
+        
     <div style="margin-top:15px;">
     <input id="buscador" placeholder="🔍 Buscar producto..." oninput="filtrar()" 
     style="width:95%;padding:12px;border-radius:10px;border:none;">
@@ -376,74 +464,83 @@ input, select {
     <div class="card">
 <img src="https://i.ibb.co/ccqMqzHZ/file-00000000063c722f9f9d692daa969a24.png">
 <h3>Drip Client Android</h3>
+        <p id="stock-DripClientAndroid">Stock: 0</p>
 <select>
 <option>7 días - $5</option>
 <option>15 días - $8</option>
 <option>30 días - $13</option>
 </select>
 <button class="btn" onclick="comprar('Drip Client Android', this.previousElementSibling)">Comprar</button>
+        <button class="btn admin-add" style="display:none;" onclick="abrirKeys('Drip Client Android')">➕ Agregar Keys</button>
 </div>
     
 <div class="card">
 <img src="https://i.ibb.co/76FCbbn/file-0000000001d471fd8ced8ec472ce12dc.png">
 <h3>Pato Amarillo</h3>
+    <p id="stock-PatoAmarillo">Stock: 0</p>
 <select><option>30 días - $9</option></select>
-<button class="btn" onclick="comprar('Pato Amarillo', this.previousElementSibling)">Comprar</button>
+<button class="btn admin-add" style="display:none;" onclick="abrirKeys('Pato Amarillo')">➕ Agregar Keys</button>
 </div>
 
 <div class="card">
 <img src="https://i.ibb.co/xqGB4S1w/file-00000000dee871f89a7aa60828c28b9f.png">
 <h3>Pato Azul</h3>
+    <p id="stock-PatoAzul">Stock: 0</p>
 <select>
 <option>7 días - $5</option>
 <option>30 días - $9</option>
-</select>
-<button class="btn" onclick="comprar('Pato Azul', this.previousElementSibling)">Comprar</button>
+</select>   
+<button class="btn admin-add" style="display:none;" onclick="abrirKeys('Pato Azul')">➕ Agregar Keys</button>
 </div>
 
 <div class="card">
 <img src="https://i.ibb.co/N6N17FZ9/file-00000000754871fdac971d7dd6d83797.png">
 <h3>Pato Verde</h3>
+    <p id="stock-PatoVerde">Stock: 0</p>
 <select><option>30 días - $9</option></select>
-<button class="btn" onclick="comprar('Pato Verde', this.previousElementSibling)">Comprar</button>
+<button class="btn admin-add" style="display:none;" onclick="abrirKeys('Pato Verde')">➕ Agregar Keys</button>
 </div>
 
 <div class="card">
 <img src="https://i.ibb.co/S452bBGY/file-000000006dcc71fdae84c3923e4ab800.png">
 <h3>HG Cheat</h3>
+    <p id="stock-HGCheat">Stock: 0</p>
 <select>
 <option>1 día - $1</option>
 <option>10 días - $6</option>
 <option>30 días - $10</option>
 </select>
-<button class="btn" onclick="comprar('HG Cheat', this.previousElementSibling)">Comprar</button>
+<button class="btn admin-add" style="display:none;" onclick="abrirKeys('HG Cheat')">➕ Agregar Keys</button>
 </div>
 
 <div class="card">
 <img src="https://i.ibb.co/6RSxCpp1/file-00000000a67471fdae61df21df5fe808.png">
 <h3>Metodo de Seguidores likes y vistas</h3>
+    <p id="stock-Metodo de Seguidores likes y vistas">Stock: 0</p>
 <select>
 <option>Acceso completo - $25</option>
 </select>
-<button class="btn" onclick="comprar('Metodo de Seguidores likes y vistas', this.previousElementSibling)">Comprar</button>
+<button class="btn admin-add" style="display:none;" onclick="abrirKeys('Metodo de Seguidores likes y vistas')">➕ Agregar Keys</button>
 </div>
 
 <div class="card">
 <img src="https://i.ibb.co/qMRHTcML/file-00000000365c71f89c9d4857760f75e6.png">
 <h3>Toma foto desde su celular</h3>
+    <p id="stock-Toma foto desde su celular">Stock: 0</p>
 <select>
 <option>Acceso completo - $50</option>
 </select>
-<button class="btn" onclick="comprar('Toma foto desde su celular', this.previousElementSibling)">Comprar</button>
+<button class="btn admin-add" style="display:none;" onclick="abrirKeys('Toma foto desde su celular')">➕ Agregar Keys</button>
 </div>
 
 <div class="card">
 <img src="https://i.ibb.co/spzBMnwC/file-00000000cc1871fdba128271d39f0544.png">
 <h3>Números virtuales para todos los países</h3>
+    <p id="stock-Números virtuales para todos los países">Stock: 0</p>
 <select>
 <option>Acceso completo - $12</option>
 </select>
-<button class="btn" onclick="comprar('Números virtuales para todos los países', this.previousElementSibling)">Comprar</button>
+<button class="btn admin-add" style="display:none;" onclick="abrirKeys('Números virtuales para todos los países')">➕ Agregar Keys</button>
 </div>
 
 <div class="card">
@@ -487,10 +584,25 @@ input, select {
 <button class="btn" onclick="cerrarRecarga()">Cerrar</button>
 </div>
 </div>
+<div id="popupKeys" class="popup">
+  <div class="popup-box">
+    <h3>🔑 Agregar Keys</h3>
 
+    <textarea id="inputKeys" placeholder="1 key por línea"></textarea>
+
+    <button class="btn" onclick="alert('CLICK OK 🔥'); guardarKeys();">Guardar</button>
+    <button class="btn" onclick="cerrarKeys()">Cerrar</button>
+  </div>
+</div>
 <!-- ADMIN -->
 <div id="adminPanel" style="display:none;">
 <h2>ADMIN PANEL</h2>
+    <h3>🔑 Agregar Keys</h3>
+
+<input id="productoKey" placeholder="Nombre del producto">
+<textarea id="keysInput" placeholder="Pega keys (1 por línea)"></textarea>
+
+<button class="btn" onclick="agregarKeys()">Guardar Keys</button>
 <h3>🟡 Pendientes</h3>
 <div id="pendientes"></div>
 
@@ -623,8 +735,17 @@ onAuthStateChanged(auth,(user)=>{
     onSnapshot(refUser,(snap)=>{
       if(snap.exists()){
         saldo.innerText = snap.data().saldo || 0;
+          cargarStock();
           bonus.innerText = snap.data().bonus || 0;
           nombreUsuario.innerText = "👤 " + (snap.data().username || "Sin nombre");
+          if(user.uid===ADMIN_UID){
+  adminBtn.style.display="block";
+
+  // 🔥 mostrar botones de keys
+  document.querySelectorAll(".admin-add").forEach(b=>{
+    b.style.display = "block";
+  });
+}
       }
     });
 
@@ -686,7 +807,28 @@ window.comprar = async (nombre, select)=>{
   fecha: Date.now() // 🔥
 });
 
-  alert("Compra realizada 🔥");
+  // 🔥 OBTENER KEY
+const refKeys = doc(db, "keys", nombre);
+const snapKeys = await getDoc(refKeys);
+
+if(!snapKeys.exists() || snapKeys.data().lista.length === 0){
+  alert("Sin stock ❌");
+  return;
+}
+
+let lista = snapKeys.data().lista;
+
+// sacar primera key
+const key = lista.shift();
+
+// guardar lista actualizada
+await setDoc(refKeys, { lista }, { merge: true });
+
+// mostrar key
+alert("✅ Compra exitosa\n\n🔑 KEY:\n" + key);
+
+// actualizar stock visual
+cargarStock();
 };
 
 window.openAdmin = async ()=>{
@@ -953,7 +1095,93 @@ window.volverTienda = () => {
   fluoritePage.style.display = "none";
   tienda.style.display = "block";
 };
+    window.agregarKeys = async () => {
+  const producto = document.getElementById("productoKey").value;
+  const keysTexto = document.getElementById("keysInput").value;
+
+  if(!producto || !keysTexto) return alert("Completa todo");
+
+  const keys = keysTexto.split("\n").filter(k => k.trim() !== "");
+
+  const refKeys = doc(db, "keys", producto);
+
+  const snap = await getDoc(refKeys);
+
+  let actuales = [];
+
+  if(snap.exists()){
+    actuales = snap.data().lista || [];
+  }
+
+  const nuevas = actuales.concat(keys);
+
+  await setDoc(refKeys, {
+    lista: nuevas
+  });
+
+  alert("Keys guardadas 🔥");
+};
+    let productoActual = "";
+
+window.abrirKeys = (nombre)=>{
+  productoActual = nombre;
+  popupKeys.style.display = "flex";
+};
+
+window.cerrarKeys = ()=>{
+  popupKeys.style.display = "none";
+};
+
+window.guardarKeys = async ()=>{
+  const texto = inputKeys.value;
+
+  if(!texto.trim()) return alert("No hay keys");
+
+  const nuevas = texto.split("\n").filter(k=>k.trim()!="");
+
+  const refKeys = doc(db,"keys",productoActual);
+  const snap = await getDoc(refKeys);
+
+  let lista = [];
+
+  if(snap.exists()){
+    lista = snap.data().lista || [];
+  }
+
+  lista = lista.concat(nuevas);
+
+  await setDoc(refKeys,{lista},{merge:true});
+
+  alert("Keys guardadas 🔥");
+
+  inputKeys.value = "";
+  cerrarKeys();
+
+  cargarStock();
+};
+    window.cargarStock = async () => {
+  const productos = document.querySelectorAll(".card h3");
+
+  productos.forEach(async (el)=>{
+    const nombre = el.innerText;
+
+    const refKeys = doc(db, "keys", nombre);
+    const snap = await getDoc(refKeys);
+
+    let cantidad = 0;
+
+    if(snap.exists()){
+      cantidad = (snap.data().lista || []).length;
+    }
+
+    const stockHTML = document.getElementById("stock-"+nombre);
+
+    if(stockHTML){
+      stockHTML.innerText = "Stock: " + cantidad;
+    }
+  });
+};
 </script>
 
 </body>
-</html>
+</html><button class="btn admin-add" style="display:none;" onclick="abrirKeys('Drip Client Android')">➕ Agregar Keys</button>
